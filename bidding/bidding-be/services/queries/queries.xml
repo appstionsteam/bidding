@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dao>
+	<queries name="userQueries">
+		<query name="addUser">
+			INSERT INTO usuario 
+				(D_NOMBRE, D_APELLIDO, C_CLAVE, FECHA_INGRESO) 
+			VALUES
+				(:name, :lastname, :password, :registrationDate)
+		</query>
+		<query name="login">
+		 	SELECT u.ID_USUARIO, u.C_TIPO_IDENTIFICACION, u.N_IDENTIFICAC, u.D_NOMBRE, u.C_ESTADO, u.C_CLAVE, u.D_APELLIDO, c.D_CORREO
+			FROM 	usuario u, correo c
+				WHERE u.ID_USUARIO = c.ID_USUARIO and c.D_CORREO = :email
+	  			  and c.D_PRINCIPAL = 'S' and u.C_CLAVE = :pwd;
+		</query>
+		<query name="getUser">
+			SELECT 	id_user, name, lastname, email, username
+		 	FROM 	nutf_user
+		 	WHERE 	id_user=:idUser
+		</query>
+		<query name="getUserByUserName">
+			SELECT 	ID_USUARIO, D_NOMBRE, D_APELLIDO
+	    	FROM 	usuario
+			WHERE 	D_NOMBRE =:name
+		</query>
+		<query name="getUserByEmail">
+			SELECT 	id_user, name, lastname, email, username
+		  	FROM 	nutf_user
+		  	WHERE 	email =:email
+		</query>
+		<query name="updateUser">
+			UPDATE 	nutf_user
+		  	SET 	email=:email,
+					name=:name,
+					lastname=:lastname,
+					username=:username
+		  	WHERE 	id_user=:id_user
+		</query>
+		<!-- <query name="updatePassword">
+			UPDATE 	nutf_user
+		  	SET 	password = :password
+		  	WHERE 	email=:email
+		</query>-->
+		<query name="updatePassword">
+			UPDATE 	nutf_user
+		  	SET 	password = :password
+		  	WHERE 	id_user=:id_user
+		</query>
+		<query name="regeneratePassword">
+			UPDATE 	nutf_user
+		  	SET 	password = :password
+		  	WHERE 	email=:email
+		</query>
+		<query name="addEmail">
+			INSERT INTO correo 
+				(ID_USUARIO, C_ESTADO, D_CORREO, D_PRINCIPAL) 
+			VALUES
+				(:idUser, :status, :email, :mainEmail)
+		</query>
+		<query name="addAddress">
+			INSERT INTO direccion 
+				(ID_USUARIO, C_ESTADO, D_DIRECCION, PAIS, PROVINCIA, CIUDAD) 
+			VALUES
+				(:idUser, :status, :description, :country, :province, :city)
+		</query>
+		<query name="getUserByEmail">
+			SELECT 	id_user, name, lastname, email, username
+		  	FROM 	nutf_user
+		  	WHERE 	email =:email
+		</query>
+	</queries>
+	<queries name="configurationQueries">
+		<query name="getConfigurationValue">
+			SELECT 	configuration_value 
+			FROM 	nutf_configuration 
+			WHERE 	configuration_code =:configuration_code AND 
+					configuration_status = 'ACT'
+		</query>
+	</queries>
+</dao>

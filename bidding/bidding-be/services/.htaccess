@@ -1,0 +1,21 @@
+<FilesMatch "\.(html|htm|js|css)$">
+FileETag None
+<ifModule mod_headers.c>
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Access-Control-Allow-Origin"
+Header always set Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+</ifModule>
+</FilesMatch>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-s
+RewriteRule ^(.*)$ Api.php?url=$1 [QSA,NC,L]
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)$ Api.php [QSA,NC,L]
+
+RewriteCond %{REQUEST_FILENAME} -s
+RewriteRule ^(.*)$ Api.php [QSA,NC,L] 
+</IfModule>
+
